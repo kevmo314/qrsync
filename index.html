@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="qrcode.min.js"></script>
+    <script type="text/javascript">
+    var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+    var oscillator = audioCtx.createOscillator();
+
+    oscillator.type = 'sine';
+    oscillator.frequency.value = 440; // value in hertz
+    oscillator.connect(audioCtx.destination);
+
+    function start() {
+      document.getElementById("sync").style.display = "block";
+      document.getElementById("buttons").style.display = "none";
+      
+      setTimeout(function() {
+        document.getElementById("sync").style.display = "none";
+        document.body.style.backgroundColor = "#FF0000";
+      }, 5 * 1000);
+      
+      setTimeout(function() {
+        document.body.style.backgroundColor = "#00FF00";
+        oscillator.start();
+      }, 7 * 1000);
+      
+      setTimeout(function() {
+        document.body.style.backgroundColor = "#FF0000";
+        oscillator.stop();
+      }, 8 * 1000);
+      
+      setTimeout(function() {
+        document.getElementById("sync").style.display = "none";
+        document.getElementById("buttons").style.display = "block";
+        document.body.style.backgroundColor = "#FFFFFF";
+      }, 10 * 1000);
+    }
+    
+    function reset() {
+      document.getElementById("reset").style.display = "block";
+      document.getElementById("buttons").style.display = "none";
+      setTimeout(function() {
+        document.getElementById("reset").style.display = "none";
+        document.getElementById("buttons").style.display = "block";
+      }, 5 * 1000);
+    }
+    </script>
+    <style>
+      #sync, #reset {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="sync"></div>
+    <div id="reset"></div>
+    <div id="buttons">
+      <button onclick="start()">Start Sync</button>
+      <button onclick="reset()">Reset</button>
+    </div>
+    <script type="text/javascript">
+      new QRCode(document.getElementById("sync"), "OBS_AUTO_DELAY:SYNC");
+      new QRCode(document.getElementById("reset"), "OBS_AUTO_DELAY:RESET");
+    </script>
+  </body>
+</html>
